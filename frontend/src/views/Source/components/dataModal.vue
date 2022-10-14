@@ -17,7 +17,7 @@
  * under the License.
 -->
 <template>
-  <div id="main" class="main-contain"></div>
+  <div id="main" class="main-contain" v-loading="modelLoading"></div>
 </template>
 
 <script>
@@ -43,16 +43,23 @@ export default {
     const router = useRouter();
     const datas = ref({});
     let showNum = ref(0);
+    let modelLoading = ref(false);
 
     const getModalTreeData = (func) => {
-      axios.get(`/servers/${router.currentRoute.value.params.serverid}/dataModel`, {}).then((res) => {
-        if (res && res.code == 0) {
-          datas.value = res.data || {};
-          showNum.value = res.data.showNum;
-          emit('show-num', showNum);
-          func && func();
-        }
-      });
+      modelLoading.value = true;
+      axios
+        .get(`/servers/${router.currentRoute.value.params.serverid}/dataModel`, {})
+        .then((res) => {
+          if (res && res.code == 0) {
+            datas.value = res.data || {};
+            showNum.value = res.data.showNum;
+            emit('show-num', showNum);
+            func && func();
+          }
+        })
+        .finally(() => {
+          modelLoading.value = false;
+        });
     };
 
     const setOption = () => {
@@ -200,6 +207,7 @@ export default {
     return {
       t,
       x,
+      modelLoading,
       datas,
       getModalTreeData,
       initCharts,

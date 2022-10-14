@@ -156,12 +156,12 @@ export default {
 <style lang="scss">
 .selectIcon {
   .el-input__suffix {
-    top: -4px;
+    top: 0;
   }
 }
 .inputIcon {
   .el-input__suffix {
-    top: 3px;
+    top: 7px;
   }
 }
 .serch_div .el-tree-node__content {
