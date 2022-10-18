@@ -95,7 +95,7 @@ export default {
       console.log(this.coder.getCursor());
     },
     codemrriorHeight(val) {
-      this.coder.setSize('auto', `calc(100vh - ${143 + val}px)`);
+      this.coder.setSize('auto', `calc(100vh - ${183 + val}px)`);
     },
     setCode(value) {
       this.coder.setValue(value);

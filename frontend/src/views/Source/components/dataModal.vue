@@ -25,7 +25,7 @@
 import { onMounted, onActivated, ref, onDeactivated } from 'vue';
 import * as echarts from 'echarts';
 // import { ElButton } from 'element-plus';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from 'vue-i18n/index';
 import axios from '@/util/axios.js';
 // import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
@@ -124,7 +124,7 @@ export default {
               rotate: 0,
               verticalAlign: 'middle',
               align: 'center',
-              fontSize: 9,
+              fontSize: 15,
               borderWidth: 1,
               borderColor: '#EAEDF2FF',
               padding: [4, 10, 4, 10],
@@ -132,7 +132,7 @@ export default {
               textStyle: {
                 color: '#000',
                 backgroundColor: '#fff',
-                fontSize: 12,
+                fontSize: 15,
                 fontWeight: 500,
                 baseline: 'middle',
               },

@@ -67,3 +67,22 @@ export function downloadFile() {
 export function getTimeseiresList(serverId, groupName, deviceName) {
   return axios.get(`/servers/${serverId}/storageGroups/${groupName}/devices/${deviceName}/timeseries`);
 }
+// batch delete measurement
+function batchDelete(serverId, groupName, deviceName, data) {
+  return axios.delete(`/servers/${serverId}/storageGroups/${groupName}/devices/${deviceName}/batchtimeseries`, { data });
+}
+export default {
+  getDeviceDate,
+  getList,
+  getData,
+  deleteDevice,
+  getDataDeviceList,
+  randomImport,
+  editData,
+  deleteDeviceData,
+  exportDataCSV,
+  importData,
+  downloadFile,
+  getTimeseiresList,
+  batchDelete,
+};

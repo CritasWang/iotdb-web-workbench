@@ -74,7 +74,12 @@
       <el-tab-pane :label="$t('device.entityStructure')" name="first">
         <div class="frist_div">
           <div style="padding: 0 0 10px 0" class="flexBox edit-box">
-            <el-button type="primary" class="newButton" @click="editDevce">{{ $t('device.editTimeseries') }}</el-button>
+            <div>
+              <el-button type="primary" @click="addPhysical" v-if="false"> {{ $t('device.addphysical') }} </el-button>
+              <el-button type="primary" class="newButton" @click="editDevce">{{ $t('device.editTimeseries') }}</el-button>
+              <el-button type="primary" @click="importDevce" v-if="false">{{ $t('device.import') }}</el-button>
+              <el-button @click="exportDevce" v-if="false">{{ $t('device.export') }}</el-button>
+            </div>
             <form-table :form="form" @serchFormData="serchFormData"></form-table>
           </div>
           <stand-table
@@ -84,12 +89,12 @@
             :getList="getListData"
             :total="totalCount"
             :lineHeight="10"
-            :lineWidth="21"
-            :celineWidth="23"
             :celineHeight="10"
             :maxHeight="500"
             :pagination="pagination"
             @getPagintions="getPagintions"
+            :selectData="selectDataPhysical"
+            :deleteArry="deleteArryPhysical"
           >
             <template #default="{ scope }">
               <div @click="searchRow(scope.row)" v-if="scope.row.newValue * 1">
@@ -232,6 +237,9 @@
         </span>
       </template>
     </el-dialog>
+    <el-dialog :title="$t('device.editTimeseries')" v-model="dialogPhysicalVisible" width="500px">
+      <edit-physical v-if="dialogPhysicalVisible"></edit-physical>
+    </el-dialog>
   </div>
 </template>
 
@@ -240,14 +248,16 @@ import { ElMessageBox, ElMessage, ElButton, ElTabs, ElTabPane, ElDropdown, ElDro
 import StandTable from '@/components/StandTable';
 import FormTable from '@/components/FormTable';
 import { reactive, ref, onActivated, computed } from 'vue';
-import { getList, getDeviceDate, deleteDevice, getDataDeviceList, randomImport, editData, deleteDeviceData, exportDataCSV, downloadFile, importData } from './api';
+import api, { getList, getDeviceDate, deleteDevice, getDataDeviceList, randomImport, editData, deleteDeviceData, exportDataCSV, downloadFile, importData } from './api';
 import Echarts from '@/components/Echarts';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from 'vue-i18n/index';
 import { useRoute, useRouter } from 'vue-router';
 import action from './components/action.vue';
 import { handleExport } from '@/util/export';
 import axios from '@/util/axios';
 import dayjs from 'dayjs';
+import EditPhysical from './components/editPhysical';
+
 export default {
   name: 'DeviceMessage',
   props: {
@@ -280,6 +290,7 @@ export default {
     let measurementList = ref([]);
     let valueList = ref([]);
     let handleChange = ref(null);
+    let selectedPhysical = ref([]);
     const filesd = ref(null);
     const percentage = reactive({
       count: 0,
@@ -315,6 +326,7 @@ export default {
       flag: true,
       flag1: false,
     });
+    const dialogPhysicalVisible = ref(false);
     const form = reactive({
       inline: true,
       formData: {},
@@ -652,6 +664,35 @@ export default {
       }, 400);
     }
     //Select the data preview check box
+    function selectDataPhysical(val) {
+      console.log(val);
+      selectedPhysical.value = val;
+    }
+    //Batch delete
+    function deleteArryPhysical() {
+      if (selectedPhysical?.value?.length) {
+        let measurementList = selectedPhysical.value.map((item) => item.timeseries);
+        ElMessageBox.confirm(`${t('device.deleteSingleDataTip')}，${t('device.deletecontent2')}`, `${t('device.tips')}`, {
+          confirmButtonText: t('device.ok'),
+          cancelButtonText: t('device.cencel'),
+          type: 'warning',
+        }).then(() => {
+          api.batchDelete(routeData.obj.connectionid, routeData.obj.storagegroupid, routeData.obj.name, { measurementList }).then((res) => {
+            if (res?.code === '0') {
+              ElMessage({
+                type: 'success',
+                message: `${t('device.deleteSuccess')}!`,
+              });
+              selectedPhysical.value = null;
+              getListData();
+            }
+          });
+        });
+        return;
+      }
+      ElMessage.error(t('device.deleteTip'));
+    }
+    //Select the data preview check box
     function selectData(val) {
       handleChange.value = val;
     }
@@ -737,6 +778,10 @@ export default {
             message: t('device.cencel'),
           });
         });
+    }
+    // add physical quantity
+    function addPhysical() {
+      dialogPhysicalVisible.value = true;
     }
     //Delete physical quantity
     function deleteRow(dataArr) {
@@ -868,14 +913,14 @@ export default {
                 : void 0,
           });
         });
-        res.data.valueList.forEach((item) => {
+
+        tableData1.list = res.data.valueList.map((item) => {
           let obj = {};
           item.forEach((etem, index) => {
             obj[`t${index}`] = etem;
           });
-          tableData1.list.push(obj);
+          return obj;
         });
-
         totalCount1.value = res.data.totalCount;
         tableflag.flag = true;
       });
@@ -977,6 +1022,7 @@ export default {
       tableData,
       formdate,
       searchRow,
+      addPhysical,
       selectData,
       editDevce,
       closeDrawer,
@@ -984,6 +1030,9 @@ export default {
       loading,
       timeseriesOptions,
       openRandomDataDialog,
+      dialogPhysicalVisible,
+      selectDataPhysical,
+      deleteArryPhysical,
     };
   },
   components: {
@@ -1001,6 +1050,7 @@ export default {
     ElForm,
     ElFormItem,
     ElProgress,
+    EditPhysical,
   },
 };
 </script>

@@ -289,7 +289,7 @@
                           </template>
                         </el-table-column>
 
-                        <el-table-column :label="$t('common.operation')">
+                        <el-table-column :label="$t('common.operation')" fixed="right" width="150">
                           <template #default="scope">
                             <div v-if="scope.row.edit">
                               <el-button type="text" size="small" @click="saveRowAuth(scope)">{{ $t('common.save') }}</el-button>
@@ -438,7 +438,7 @@ import {
 // import { Close } from '@element-plus/icons';
 import NewSource from './components/newSource.vue';
 import UserRole from './components/role/Index.vue';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from 'vue-i18n/index';
 import DataModal from './components/dataModal.vue';
 import axios from '@/util/axios.js';
 import setOperation from '@/util/setOperation.js';
@@ -1870,6 +1870,9 @@ export default {
             }
             &:deep(.el-checkbox__input) {
               display: none;
+            }
+            &:deep(.el-checkbox__label) {
+              padding-left: 0;
             }
           }
           &:deep(.el-checkbox__label) {

@@ -323,6 +323,8 @@ const en = {
       alias: 'Alias',
       dataNum: 'Total Data (Piece)',
       editTimeseries: 'Edit Timeseries',
+      export: 'Export',
+      import: 'Import',
       inputTip: 'Please Input',
       selectTip: 'Please Choose',
       entityStructure: 'Entity Structure',

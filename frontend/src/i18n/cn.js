@@ -326,6 +326,8 @@ const cn = {
       alias: '别名',
       dataNum: '数据总量(条)',
       editTimeseries: '编辑物理量',
+      export: '导出物理量',
+      import: '导入物理量',
       inputTip: '请输入',
       selectTip: '请选择',
       entityStructure: '实体结构',

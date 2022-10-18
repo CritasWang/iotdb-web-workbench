@@ -23,7 +23,7 @@
         <el-select v-model="modeValue" class="selece-box-mode" placeholder="请选择">
           <el-option v-for="item in modeOptions" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
-        <el-select v-model="typeValue" class="selece-box-type" :placeholder="$t('controlPage.selectMetrics')">
+        <el-select v-model="typeValue" class="selece-box-type" :placeholder="$t('controlPage.selectMetrics')" clearable>
           <el-option v-for="item in typeOptions" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
       </div>
@@ -45,7 +45,7 @@ import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from
 import { useRouter, useRoute } from 'vue-router';
 import IndicatorChart from './indicatorChart';
 import useInitChart from '../hooks/useInitChart';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from 'vue-i18n/index';
 export default {
   name: 'IndicatorPanel',
   props: {

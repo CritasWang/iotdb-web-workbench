@@ -88,6 +88,10 @@ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY * KIND, either express or imp
               </span>
             </div>
           </div>
+          <div v-if="item.type === 'ATTRIBUTES' || item.type === 'TAG'">
+            <i v-if="!item.onlyShow" class="el-icon-edit editF" @click="editTag(formData[item.itemID], formData.timeseries, item.prop)"></i>
+            <span v-for="(propItem, index) in formData[item.itemID]" :key="index">{{ propItem[0] }} = {{ propItem[1] }}, </span>
+          </div>
         </template>
       </el-input>
     </el-form-item>

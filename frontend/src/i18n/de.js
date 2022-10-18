@@ -316,6 +316,8 @@ const de = {
       alias: 'Alias',
       dataNum: 'Gesamtdaten (Stück)',
       editTimeseries: 'Physikalische Menge bearbeiten',
+      import: 'Einfuhr der Chargen',
+      export: 'Exportieren von Daten',
       inputTip: 'Bitte geben Sie ein',
       selectTip: 'Bitte wählen',
       entityStructure: 'Struktur des Organs',
